@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ocde-angular"
+    }
+  },
+  "defaultProject": "ocde-angular",
+  "cli": {
+    "analytics": "6067fc4b-6423-441f-a791-d0ecea88bea0"
+  }
 }
