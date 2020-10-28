@@ -2,12 +2,12 @@ body {
     text-align: center;
   }
   
-  Textarea {
-    width: 40%;
+  .t1 {
+    width: 100%;
     margin-top: 2%;
     min-height: 500px;
     overflow: scroll;
-    margin-left: 10%;
+    margin-left: 5%;
     display: inline-block;
     background: #f4f4f9;
     outline: none;
@@ -15,6 +15,19 @@ body {
     font-size: 14px;
   }
   
+  .t2 {
+    width: 100%;
+    min-height: 250px;
+    overflow: scroll;
+    margin-top: 4%;
+    margin-left: 85%;
+    display: inline-block;
+    background: #f4f4f9;
+    outline: none;
+    font-family: Courier, sans-serif;
+    font-size: 14px;
+  }
+
   iframe {
     bottom: 0;
     position: relative;
@@ -22,13 +35,12 @@ body {
     height: 35em;
   }
 
-  :right {
+  .right {
     width: 30%;
-    margin-top: 52%;
-    min-height: 500px;
-    overflow: scroll;
+    margin-top: -200px;
+    margin-left: 57%;
+    min-height: 200px;
     margin-right: 10%;
-    display: inline-block;
     background: #f4f4f9;
     outline: none;
     font-family: Courier, sans-serif;
