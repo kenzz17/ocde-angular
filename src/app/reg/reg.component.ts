@@ -9,10 +9,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./reg.component.css']
 })
 export class RegComponent implements OnInit {
+
   feedbackForm = new FormGroup({
     name: new FormControl(''),
     email: new FormControl(''),
-    feedback: new FormControl(null),
+    password: new FormControl(null),
     comment: new FormControl('')
   });
 
@@ -34,13 +35,13 @@ export class RegComponent implements OnInit {
     )
   }
 
+  openBar(message: string) {
+    this.msgBar.open(message, undefined, { duration: 3000, });
+  }
 
   constructor(private formService: FormService, private msgBar: MatSnackBar) { }
 
-  ngOnInit(): void {
-    this.formService.initVals().subscribe((data) => {
-      this.feedbackForm.setValue(data)
-    })
+  ngOnInit(): {
   }
 
 }
