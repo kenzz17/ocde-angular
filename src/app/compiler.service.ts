@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Code } from './code';
+import { Code } from './Code';
 import { Out } from './Out';
 
 const httpOptions = {
