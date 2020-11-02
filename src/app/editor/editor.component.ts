@@ -3,7 +3,6 @@ import { Code } from '../Code';
 import { CompilerService } from '../compiler.service';
 import { Out } from '../Out';
 
-
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -12,11 +11,18 @@ import { Out } from '../Out';
 export class EditorComponent implements OnInit {
 
   selected = 'cpp';
+  stdin = '';
   title = 'ocde-angular';
   able = false;
 
-  inp = { passwd: '314159kenzz17', lang: 'cpp', code: '', stdin: '' };
+  inp: Code = { passwd: '314159kenzz17', lang: 'cpp', code: '', stdin: '' };
   out: Out;
+
+  //set language for syntax highlighting here
+  editorOptions = {theme: 'vs-dark', language: 'cpp'};
+  
+  // initial value of code --> should be different for different languages 
+  code: string = '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}';
 
   constructor(private compileService: CompilerService) { }
 
@@ -24,8 +30,8 @@ export class EditorComponent implements OnInit {
   submit(): void {
     this.able = true;
     this.inp.lang = this.selected;
-    this.inp.code = (document.getElementById('code') as HTMLInputElement).value;
-    this.inp.stdin = (document.getElementById('input') as HTMLInputElement).value;
+    this.inp.code = this.code;
+    this.inp.stdin = this.stdin;
     this.compileService.compile(this.inp)
       .subscribe(data => this.show(data));
   }

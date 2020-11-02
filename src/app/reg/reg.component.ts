@@ -41,7 +41,7 @@ export class RegComponent implements OnInit {
 
   constructor(private formService: FormService, private msgBar: MatSnackBar) { }
 
-  ngOnInit(): {
+  ngOnInit(): void{
   }
 
 }
