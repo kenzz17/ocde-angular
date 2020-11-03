@@ -1,28 +1,35 @@
-<h1>Code Editor</h1>
-<tr>
-    <td width="60%">
-        <a style="margin-left: 5%;">Editor</a>
-        <Textarea id="code" class="t1" placeholder=""></Textarea>
-    </td>
-    <td valign="top" align="right" width="30%">
-        Input
-        <Textarea id="input" class="t2" placeholder=""></Textarea>
-    </td>
-</tr>
-<div class="right" *ngIf="out">
-    <h2>Output</h2>
-    {{out.stdout}}
-    {{out.stderr}}
-    {{out.error}}
+<div style="height: 5%;">
+    <h2>Code Editor | header comes here</h2>
 </div>
-<br>
-<div style="margin-left: 20%;margin-top: 1%;">
-    <mat-form-field appearance="fill">
-        <mat-label>Select language</mat-label>
-        <mat-select [(value)]="selected">
-            <mat-option value="py">Python</mat-option>
-            <mat-option value="cpp">C++</mat-option>
-        </mat-select>
-    </mat-form-field>
+<div class="float-container">
+    <div class="float-child">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+    </div>
+    <div class="float-child">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Stdin</mat-label>
+            <textarea matInput rows=10 [(ngModel)]="stdin"></textarea>
+        </mat-form-field>
+        <div>
+            <div style="width: 100%;" *ngIf="out">
+                <h2>Output</h2>
+                {{out.stdout}}
+                {{out.stderr}}
+                {{out.error}}
+            </div>
+        </div>
+        <br>
+        <mat-form-field appearance="outline">
+            <mat-label>Language</mat-label>
+            <mat-select [(value)]="selected">
+                <mat-option value="py">Python</mat-option>
+                <mat-option value="cpp">C++</mat-option>
+                <mat-option value="js">Javascript</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-button class="bigger-bordered" [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">
+            Run
+        </button>
+        <!-- <button [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">Compile</button> -->
+    </div>
 </div>
-<button [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">Compile</button>

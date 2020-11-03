@@ -19,6 +19,9 @@ import { RegComponent } from './reg/reg.component';
 import { EditorComponent } from './editor/editor.component';
 import { AppComponent } from './app.component';
 
+//monaco stuff
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,8 @@ import { AppComponent } from './app.component';
     MatRadioModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    FormsModule,
+    MonacoEditorModule.forRoot()
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
