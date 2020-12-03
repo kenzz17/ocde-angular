@@ -1,9 +1,47 @@
+<ng-template #content let-modal> 
+    <div class="modal-header"> 
+        <h4 class="modal-title" 
+            id="modal-basic-title"> 
+            choose a file
+        </h4> 
+        <button type="button" class="close"
+                aria-label="Close" (click)= 
+                "modal.dismiss('Cross click')"> 
+  
+            <span aria-hidden="true"> 
+                × 
+            </span> 
+        </button> 
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let file of files">
+            <button type="button" (click)="s(file.code)">
+                {{file.name}}
+            </button>
+        </div>
+    </div> 
+    <div class="modal-footer"> 
+        <button type="button" 
+            class="btn btn-outline-dark" 
+            (click)="modal.close('open')"> 
+            Open
+        </button> 
+    </div> 
+</ng-template>
 <div style="height: 5%;">
-    <h2>Code Editor | header comes here</h2>
+    <h2>
+        {{editorOptions1.language}} | {{selected}}
+    </h2>
 </div>
 <div class="float-container">
-    <div class="float-child">
-        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+    <div *ngIf="selected=='cpp'" class="float-child">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="code"></ngx-monaco-editor>
+    </div>
+    <div *ngIf="selected=='py'" class="float-child">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions2" [(ngModel)]="code"></ngx-monaco-editor>
+    </div>
+    <div *ngIf="selected=='js'" class="float-child">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions3" [(ngModel)]="code"></ngx-monaco-editor>
     </div>
     <div class="float-child">
         <mat-form-field appearance="outline" style="width: 100%;">
@@ -27,8 +65,20 @@
                 <mat-option value="js">Javascript</mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-button class="bigger-bordered" [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">
+        <button mat-button class="bigger-bordered" [disabled]="!getResult()" style="margin-left: 25%;" (click)="submit()">
             Run
+        </button>
+        <button mat-button class="bigger-bordered0" style="margin-left: 15%;">
+            clear
+        </button>
+        <button mat-button class="bigger-bordered1" style="margin-left: 15%;margin-top: 5%;">
+            Save
+        </button>
+        <button mat-button class="bigger-bordered2" style="margin-left: 15%;margin-top: 5%;" (click)="open(content)">
+            Open
+        </button>
+        <button mat-button class="bigger-bordered3" style="margin-left: 15%;margin-top: 5%;">
+            Delete
         </button>
         <!-- <button [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">Compile</button> -->
     </div>

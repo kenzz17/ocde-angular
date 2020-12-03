@@ -17,8 +17,33 @@
   margin: 0 12px;
 }
 
+
+.bigger-bordered0 {
+  font-size: 120%;
+  background-color: gray;
+  flex: 1 1 auto;
+}
+
 .bigger-bordered {
   font-size: 120%;
   background-color: lawngreen;
+  flex: 1 1 auto;
+}
+
+.bigger-bordered1 {
+  font-size: 120%;
+  background-color: cornflowerblue;
+  flex: 1 1 auto;
+}
+
+.bigger-bordered2 {
+  font-size: 120%;
+  background-color: darkorange;
+  flex: 1 1 auto;
+}
+
+.bigger-bordered3 {
+  font-size: 120%;
+  background-color: lightcoral;
   flex: 1 1 auto;
 }
