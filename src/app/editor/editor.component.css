@@ -3,9 +3,22 @@
   height: 95%;
 }
 
-.float-child {
-  flex: 1;
-  height: 100%;
+.header {
+  background-color: burlywood;
+  color: black;
+  height: 27.5px;
+  vertical-align: middle;
+  font-size: 15px;
+  margin-bottom: 2%;
+}
+
+.add{
+  float: right;
+  margin-right: 10px;
+}
+
+.add:hover{
+  background-color: aquamarine;
 }
 
 .float-container:first-child {
@@ -46,4 +59,29 @@
   font-size: 120%;
   background-color: lightcoral;
   flex: 1 1 auto;
+}
+
+.files {
+  width: 60%;
+  text-align: left;
+}
+
+.files:hover {
+  color: blue;
+}
+
+.files:focus {
+  background-color: gray;
+}
+
+.files1 {
+  float: right;
+}
+
+.files1:hover {
+  color: red;
+}
+
+.files1:focus {
+  background-color: gray;
 }

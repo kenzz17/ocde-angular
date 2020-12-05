@@ -1,4 +1,4 @@
-<ng-template #content let-modal> 
+<!-- <ng-template #content let-modal> 
     <div class="modal-header"> 
         <h4 class="modal-title" 
             id="modal-basic-title"> 
@@ -15,7 +15,7 @@
     </div>
     <div class="modal-body">
         <div *ngFor="let file of files">
-            <button type="button" (click)="s(file.code)">
+            <button type="button" class="files" (click)="s(file.code)">
                 {{file.name}}
             </button>
         </div>
@@ -27,23 +27,43 @@
             Open
         </button> 
     </div> 
-</ng-template>
+</ng-template>-->
 <div style="height: 5%;">
     <h2>
-        {{editorOptions1.language}} | {{selected}}
+        {{file_selected}}
     </h2>
 </div>
 <div class="float-container">
-    <div *ngIf="selected=='cpp'" class="float-child">
+    <div style="height: max-content;width: 10%;border-style: groove;border-color: darkgray;">
+        <div class="header">
+            Files<button class="add" (click)="add()">+</button>
+        </div>
+        <div *ngFor="let file of files" >
+            <button type="button" class="files" (click)="s(file.code,file.name)">
+                {{file.name}}
+            </button>
+            <button type="button" class="files1" (click)="del(file.name)">
+                del
+            </button>
+        </div>
+        <div *ngIf="is_add">
+            <input [(ngModel)]="new_file" style="width: 60%;" placeholder="name" id="name"/>
+            <button type="button" style="float: right; width: 35%" (click)="fin_add()">{{create}}</button>
+        </div>
+        <button mat-button class="bigger-bordered1" style="margin-left: 20%;margin-top: 35%;" (click)="save()">
+            Save
+        </button>
+    </div>
+    <div *ngIf="selected=='cpp'" style="height: 100%;width: 49.5%;margin-left: 0.5%;">
         <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="code"></ngx-monaco-editor>
     </div>
-    <div *ngIf="selected=='py'" class="float-child">
+    <div *ngIf="selected=='py'" style="height: 100%;width: 49%;margin-left: 1%;">
         <ngx-monaco-editor style="height: 100%;" [options]="editorOptions2" [(ngModel)]="code"></ngx-monaco-editor>
     </div>
-    <div *ngIf="selected=='js'" class="float-child">
+    <div *ngIf="selected=='js'" style="height: 100%;width: 49%;margin-left: 1%;">
         <ngx-monaco-editor style="height: 100%;" [options]="editorOptions3" [(ngModel)]="code"></ngx-monaco-editor>
     </div>
-    <div class="float-child">
+    <div style="height: 100%;width: 30%;margin-left: 5%;">
         <mat-form-field appearance="outline" style="width: 100%;">
             <mat-label>Stdin</mat-label>
             <textarea matInput rows=10 [(ngModel)]="stdin"></textarea>
@@ -67,18 +87,6 @@
         </mat-form-field>
         <button mat-button class="bigger-bordered" [disabled]="!getResult()" style="margin-left: 25%;" (click)="submit()">
             Run
-        </button>
-        <button mat-button class="bigger-bordered0" style="margin-left: 15%;">
-            clear
-        </button>
-        <button mat-button class="bigger-bordered1" style="margin-left: 15%;margin-top: 5%;">
-            Save
-        </button>
-        <button mat-button class="bigger-bordered2" style="margin-left: 15%;margin-top: 5%;" (click)="open(content)">
-            Open
-        </button>
-        <button mat-button class="bigger-bordered3" style="margin-left: 15%;margin-top: 5%;">
-            Delete
         </button>
         <!-- <button [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">Compile</button> -->
     </div>
