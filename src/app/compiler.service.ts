@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { from, Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Code } from './Code';
 import { Out } from './Out';
 
@@ -19,9 +18,9 @@ export class CompilerService {
 
   constructor(private http: HttpClient) { }
 
-  private url = 'http://13.76.187.23:5000/v1'
+  private url = 'http://13.76.187.23:5000/v1';
 
-  compile(code: Code): Observable<Out> {
+  public compile(code: Code): Observable<Out> {
     return this.http.post<Out>(this.url, code, httpOptions)
   }
 

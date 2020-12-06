@@ -1,6 +1,5 @@
 .float-container {
   display: flex;
-  height: 95%;
 }
 
 .header {
@@ -22,7 +21,6 @@
 }
 
 .float-container:first-child {
-  height: 100%;
   width: 100%;
 }
 
@@ -39,7 +37,7 @@
 
 .bigger-bordered {
   font-size: 120%;
-  background-color: lawngreen;
+  background-color: green;
   flex: 1 1 auto;
 }
 
@@ -67,19 +65,11 @@
 }
 
 .files:hover {
-  color: blue;
+  color: lightblue;
 }
 
 .files:focus {
   background-color: gray;
-}
-
-.files1 {
-  float: right;
-}
-
-.files1:hover {
-  color: red;
 }
 
 .files1:focus {

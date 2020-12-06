@@ -1,0 +1,39 @@
+<div style="position: absolute;top: 20%; right: 75%; bottom: 60%; left: 15%;">
+    <button mat-button (click)="is_add=true; is_Project=true;">
+        New Project
+    </button> 
+</div>
+<div style="position: absolute; top: 45%; right: 75%; bottom: 35%; left: 15%;">
+    <button mat-button (click)="is_add=true; is_Project=false;">
+        New Scratch File
+    </button>
+</div>
+<div style="position: absolute; overflow-y: auto;top: 15%; right: 30%; bottom: 5%; left: 30%; border: 2px solid red; border-radius: 2%; padding: 0.5%;">
+    <div *ngIf="is_add">
+        <mat-card style="margin-bottom: 5px; margin-right: 5px;">
+            <input [(ngModel)]="new_file" style="line-height: 125%" placeholder="Enter name"/>
+            <button mat-button (click)="is_add=false" style="float: right; line-height: 125%">
+                Cancel
+            </button>
+            <button mat-button (click)="fin_add()" style="float: right; line-height: 125%">
+                Confirm
+            </button>
+        </mat-card>
+    </div>
+    <div *ngFor="let file of scratch_files_list">
+        <mat-card style="margin-bottom: 5px; margin-right: 5px;">
+            {{file.name}}.{{file.lang}}
+            <button mat-button (click)="gotoScratch(file)" style="float: right; color: red; line-height: 125%">
+                Go
+            </button>
+        </mat-card>
+    </div>
+    <div *ngFor="let proj of projects_list">
+        <mat-card style="margin-bottom: 5px; margin-right: 5px;">
+            {{proj}}
+            <button mat-button (click)="gotoProj(proj)" style="float: right; color: chartreuse; line-height: 125%;">
+                Go
+            </button>
+        </mat-card>
+    </div>
+</div>

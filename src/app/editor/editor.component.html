@@ -1,50 +1,13 @@
-<!-- <ng-template #content let-modal> 
-    <div class="modal-header"> 
-        <h4 class="modal-title" 
-            id="modal-basic-title"> 
-            choose a file
-        </h4> 
-        <button type="button" class="close"
-                aria-label="Close" (click)= 
-                "modal.dismiss('Cross click')"> 
-  
-            <span aria-hidden="true"> 
-                × 
-            </span> 
-        </button> 
-    </div>
-    <div class="modal-body">
-        <div *ngFor="let file of files">
-            <button type="button" class="files" (click)="s(file.code)">
-                {{file.name}}
-            </button>
-        </div>
-    </div> 
-    <div class="modal-footer"> 
-        <button type="button" 
-            class="btn btn-outline-dark" 
-            (click)="modal.close('open')"> 
-            Open
-        </button> 
-    </div> 
-</ng-template>-->
-<div style="height: 5%;">
-    <h2>
-        {{file_selected}}
-    </h2>
-</div>
-<div class="float-container">
-    <div style="height: max-content;width: 10%;border-style: groove;border-color: darkgray;">
+<div class="float-container" style="position: absolute;top: 8%; right: 0; bottom: 0; left: 0;">
+    <div style="position: absolute; top: 1%; right: 84.6%; bottom: 2%; left: 0.2%; border: 2px solid gray; border-radius: 2%; padding: 0.2%;">
         <div class="header">
             Files<button class="add" (click)="add()">+</button>
         </div>
         <div *ngFor="let file of files" >
-            <button type="button" class="files" (click)="s(file.code,file.name)">
-                {{file.name}}
+            <button type="button" class="files" (click)="s(file.body,file.name, file.lang)">
+                {{file.name}}.{{file.lang}}
             </button>
-            <button type="button" class="files1" (click)="del(file.name)">
-                del
-            </button>
+            <input type="image" src="assets/delete.png" alt="del" width="8%" style="float: right;" (click)="del(file.name)">
         </div>
         <div *ngIf="is_add">
             <input [(ngModel)]="new_file" style="width: 60%;" placeholder="name" id="name"/>
@@ -54,40 +17,38 @@
             Save
         </button>
     </div>
-    <div *ngIf="selected=='cpp'" style="height: 100%;width: 49.5%;margin-left: 0.5%;">
-        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="code"></ngx-monaco-editor>
+    <div *ngIf="worker.openFile_lang=='cpp'" style="position: absolute; top: 1%; right: 25%; bottom: 0; left: 16%;">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="worker.openFile_body"></ngx-monaco-editor>
     </div>
-    <div *ngIf="selected=='py'" style="height: 100%;width: 49%;margin-left: 1%;">
-        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions2" [(ngModel)]="code"></ngx-monaco-editor>
+    <div *ngIf="worker.openFile_lang=='py'" style="position: absolute; top: 1%; right: 25%; bottom: 0; left: 16%;">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions2" [(ngModel)]="worker.openFile_body"></ngx-monaco-editor>
     </div>
-    <div *ngIf="selected=='js'" style="height: 100%;width: 49%;margin-left: 1%;">
-        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions3" [(ngModel)]="code"></ngx-monaco-editor>
+    <div *ngIf="worker.openFile_lang=='js'" style="position: absolute; top: 1%; right: 25%; bottom: 0; left: 16%;">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions3" [(ngModel)]="worker.openFile_body"></ngx-monaco-editor>
     </div>
-    <div style="height: 100%;width: 30%;margin-left: 5%;">
-        <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-label>Stdin</mat-label>
-            <textarea matInput rows=10 [(ngModel)]="stdin"></textarea>
-        </mat-form-field>
-        <div>
-            <div style="width: 100%;" *ngIf="out">
-                <h2>Output</h2>
-                {{out.stdout}}
-                {{out.stderr}}
-                {{out.error}}
-            </div>
+    <div style="position: absolute; top: 0.4%; right: 0.2%; bottom: 0; left: 76%; width: 23.8%;">
+        <div style="position: absolute; top: 0; right: 0; bottom: 10%; left: 0;">
+            <mat-form-field appearance="outline" style="width: 100%; height: 50%;">
+                <mat-label>STDIN</mat-label>
+                <textarea matInput rows=16 [(ngModel)]="stdin"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%; height: 50%;">
+                <mat-label>OUTPUT</mat-label>
+                <textarea matInput rows=16 readonly>{{out.stdout}}&#013;&#010;{{out.stderr}}&#013;&#010;{{out.error}}</textarea>
+            </mat-form-field>
         </div>
-        <br>
-        <mat-form-field appearance="outline">
-            <mat-label>Language</mat-label>
-            <mat-select [(value)]="selected">
-                <mat-option value="py">Python</mat-option>
-                <mat-option value="cpp">C++</mat-option>
-                <mat-option value="js">Javascript</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-button class="bigger-bordered" [disabled]="!getResult()" style="margin-left: 25%;" (click)="submit()">
-            Run
-        </button>
-        <!-- <button [disabled]="!getResult()" style="margin-left: 50%;" (click)="submit()">Compile</button> -->
+        <div style="position: absolute; top: 90%; right: 0; bottom: 0; left: 0;">
+            <mat-form-field appearance="outline" style="height: 100%;">
+                <mat-label>Language</mat-label>
+                <mat-select [(value)]="worker.openFile_lang">
+                    <mat-option value="py">Python</mat-option>
+                    <mat-option value="cpp">C++</mat-option>
+                    <mat-option value="js">Javascript</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-button class="bigger-bordered" [disabled]="able" style="margin-left: 17%;" (click)="submit()">
+                Run
+            </button>
+        </div>
     </div>
 </div>
