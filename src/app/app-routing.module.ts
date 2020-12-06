@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RegComponent } from './reg/reg.component';
 import { EditorComponent } from './editor/editor.component';
+import { HomeComponent } from './home/home.component';
 const routes: Routes = [
-  { path: 'reg', component: RegComponent },
   { path: 'editor', component: EditorComponent },
-  { path: '', redirectTo: '/editor', pathMatch: 'full' }
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full'}
 ];
 
 @NgModule({
