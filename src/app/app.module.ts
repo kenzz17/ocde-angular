@@ -23,12 +23,14 @@ import { AppComponent } from './app.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegComponent,
-    EditorComponent
+    EditorComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

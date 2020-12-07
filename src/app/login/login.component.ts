@@ -5,28 +5,35 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reg',
-  templateUrl: './reg.component.html',
-  styleUrls: ['./reg.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class RegComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   feedbackForm = new FormGroup({
     username: new FormControl('',Validators.required),
-    email: new FormControl('',Validators.required),
     password: new FormControl('',Validators.required)
   });
 
+  
+  public openBar(message: string) {
+    this.msgBar.open(message, undefined, { duration: 3000, });
+  }
+
+
+  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) { }
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
-      this.formService.postVals(JSON.parse(JSON.stringify(this.feedbackForm.value))).subscribe(
+      this.formService.initVals(JSON.parse(JSON.stringify(this.feedbackForm.value))).subscribe(
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
             this.formService.TOKEN = obj["token"];
-            this.formService.USERNAME = obj["user"]["username"];
-            this.openBar("Registration Successful");
+            this.feedbackForm.get
+            this.formService.USERNAME = this.feedbackForm.get("username").value;
+            this.openBar("Login Successful");
             this.route.navigate(['/editor'])
           }
         },(error)=>{
@@ -41,21 +48,17 @@ export class RegComponent implements OnInit {
     }
   }
 
-  public openBar(message: string) {
-    this.msgBar.open(message, undefined, { duration: 3000, });
+  ngOnInit(): void {
   }
 
-  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) { }
-
-  ngOnInit(): void{
-  }
-
-  login(): void{
-    this.route.navigate(['/login'])
+  
+  signup(): void{
+    this.route.navigate(['/reg'])
   }
 
   guestlogin(): void{
     this.route.navigate(['/editor'])
   }
+
 
 }

@@ -5,11 +5,6 @@
             <input matInput formControlName="username">
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" [floatLabel]="'Email'">
-            <mat-label>Email *</mat-label>
-            <input matInput formControlName="email">
-        </mat-form-field>
-        <br>
         <mat-form-field appearance="outline" [floatLabel]="'Password'">
             <mat-label>Password *</mat-label>
             <input matInput formControlName="password">
@@ -21,8 +16,8 @@
     </form>
 </div>
 <div class="container">
-    <div (click)="login()" class="text1">
-        already a user?
+    <div (click)="signup()" class="text1">
+        new user?
     </div>
     or
     <div (click)="guestlogin()" class="text3">

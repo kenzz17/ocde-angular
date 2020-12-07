@@ -4,8 +4,7 @@ import { CompilerService } from '../compiler.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Out } from '../Out';
 import { FILES } from '../mock-files';
-import { File } from '../File';
-import { from } from 'rxjs';
+import { FormService } from '../form.service';
 
 @Component({
   selector: 'app-editor',
@@ -40,7 +39,7 @@ export class EditorComponent implements OnInit {
   code: string = '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}';
   new_code = '';
 
-  constructor(private compileService: CompilerService, private modalService: NgbModal) { }
+  constructor(private compileService: CompilerService, private formService: FormService) {}
 
 
   submit(): void {

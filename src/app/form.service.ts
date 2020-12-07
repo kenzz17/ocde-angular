@@ -1,19 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient,HttpHeaders, } from '@angular/common/http';
+import { Observable, pipe } from 'rxjs';
+
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+  })
+};
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
 
+  public TOKEN: string;
+  public USERNAME: string;
+
   constructor(private http: HttpClient) { }
 
-  initVals(): Observable<JSON> {
-    return this.http.get<JSON>("https://cs251-outlab-6.herokuapp.com/initial_values/");
+  initVals(data: JSON): Observable<JSON> {
+    return this.http.post<JSON>("http://52.187.32.163:8000/api/login/",data,httpOptions);
   }
 
   postVals(data: JSON): Observable<JSON> {
-    return this.http.post<JSON>("https://cs251-outlab-6.herokuapp.com/add_new_feedback/", data);
+    return this.http.post<JSON>("http://52.187.32.163:8000/api/register/", data, httpOptions)
   }
 }
