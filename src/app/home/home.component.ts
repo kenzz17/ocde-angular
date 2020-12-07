@@ -12,7 +12,7 @@ import { WorkerService } from '../worker.service';
 export class HomeComponent implements OnInit {
   /*
     NOTE : ProjectFile != File
-    NOTE : all requests for files to be done here only
+    NOTE : all requests for files (and new files/projects) to be done here only
     when a project is opened, its structure is maintained in the editor by
     workspace_structure, which is locally stored in the editor component as
     this.files
@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit {
     //make get request to `projName` project
     //may get data like {'name':projName, 'files':[..an array of files (ProjFile[])..]}
     this.worker.workspace_isScratch = false;
-    this.worker.workspace_structure = SAMPLE_PROJ.files; //simulated by SAMPLE_PROJ
-    this.worker.workspace_name = SAMPLE_PROJ.name;
+    this.worker.workspace_structure = SAMPLE_PROJ; //simulated by SAMPLE_PROJ
+    this.worker.workspace_name = 'proj1';
     this.router.navigateByUrl('/editor');
   }
 

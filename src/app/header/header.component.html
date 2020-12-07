@@ -11,10 +11,10 @@
     </span>
     <span *ngIf="router.url==='/editor'">
         <small *ngIf='worker.workspace_isScratch' style="border: 2px solid gray; border-radius: 6px; margin-left: 100px; padding: 2%;">
-            {{worker.openFile_name}}.{{worker.openFile_lang}}
+            {{worker.openFile_name}}
         </small>
         <small *ngIf='!worker.workspace_isScratch' style="border: 2px solid gray; border-radius: 6px; margin-left: 100px; padding: 2%;">
-            {{worker.workspace_name}} :: {{worker.openFile_path}}/{{worker.openFile_name}}.{{worker.openFile_lang}}
+            {{worker.workspace_name}} :: {{worker.openFile_path}}/{{worker.openFile_name}}
         </small>
     </span>
     <span class="example-spacer"></span>

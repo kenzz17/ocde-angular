@@ -4,14 +4,14 @@
             Files<button class="add" (click)="add()">+</button>
         </div>
         <div *ngFor="let file of files" >
-            <button type="button" class="files" (click)="s(file.body,file.name, file.lang)">
-                {{file.name}}.{{file.lang}}
+            <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" (click)="s(file.body,file.name, file.lang)">
+                {{file.name}}
             </button>
-            <input type="image" src="assets/delete.png" alt="del" width="8%" style="float: right;" (click)="del(file.name)">
+            <input type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">
         </div>
         <div *ngIf="is_add">
-            <input [(ngModel)]="new_file" style="width: 60%;" placeholder="name" id="name"/>
-            <button type="button" style="float: right; width: 35%" (click)="fin_add()">{{create}}</button>
+            <input [(ngModel)]="new_file" style="width: 60%;" required placeholder="name" id="name"/>
+            <button type="button" [disabled]="new_file.trim()==''" style="float: right; width: 35%" (click)="fin_add()">{{create}}</button>
         </div>
         <button mat-button class="bigger-bordered1" style="margin-left: 20%;margin-top: 35%;" (click)="save()">
             Save
@@ -38,7 +38,7 @@
             </mat-form-field>
         </div>
         <div style="position: absolute; top: 90%; right: 0; bottom: 0; left: 0;">
-            <mat-form-field appearance="outline" style="height: 100%;">
+            <mat-form-field appearance="outline" style="margin-top: 0 !important; margin-bottom: 0 !important;">
                 <mat-label>Language</mat-label>
                 <mat-select [(value)]="worker.openFile_lang">
                     <mat-option value="py">Python</mat-option>

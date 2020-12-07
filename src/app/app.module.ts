@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon'; 
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { EditorComponent } from './editor/editor.component';
@@ -43,6 +44,7 @@ import { HeaderComponent } from './header/header.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     MatRadioModule,
     MatCardModule,
     MatSnackBarModule,

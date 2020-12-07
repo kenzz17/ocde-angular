@@ -91,7 +91,7 @@ export class EditorComponent implements OnInit {
 
   fin_add(): void{
     this.files.push({
-      name: this.new_file.split('.').slice(0,-1).join('.'),
+      name: this.new_file,
       body: this.new_code,
       lang: this.new_file.split('.').slice(-1)[0]
     });
