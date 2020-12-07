@@ -27,4 +27,14 @@ export class FormService {
   postVals(data: JSON): Observable<JSON> {
     return this.http.post<JSON>("http://52.187.32.163:8000/api/register/", data, httpOptions)
   }
+
+  logout(): Observable<JSON>{
+    var httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': "Token " + this.TOKEN
+      })
+    }
+    return this.http.post<JSON>("http://52.187.32.163:8000/api/logout/",{},httpOption);
+  }
 }
