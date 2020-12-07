@@ -1,0 +1,31 @@
+<div class="big-container">
+    <form [formGroup]="feedbackForm">
+        <mat-form-field appearance="outline" [floatLabel]="'UserName'">
+            <mat-label>UserName *</mat-label>
+            <input matInput formControlName="username">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="'Email'">
+            <mat-label>Email *</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="'Password'">
+            <mat-label>Password *</mat-label>
+            <input matInput formControlName="password">
+        </mat-form-field>
+        <br>
+        <button mat-button class="bigger-bordered" (click)="onSubmit()">
+            Register 
+        </button>
+    </form>
+</div>
+<div class="container">
+    <div (click)="login()" class="text1">
+        already a user?
+    </div>
+    or
+    <div (click)="guestlogin()" class="text3">
+        continue as guest
+    </div>
+</div>

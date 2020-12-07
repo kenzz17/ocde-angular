@@ -24,13 +24,17 @@ import { AppComponent } from './app.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
+import { RegComponent } from './reg/reg.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    RegComponent,
     EditorComponent,
+    LoginComponent,
     HomeComponent,
     HeaderComponent
   ],
