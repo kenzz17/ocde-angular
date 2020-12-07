@@ -3,7 +3,6 @@ import { Code } from '../Code';
 import { CompilerService } from '../compiler.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Out } from '../Out';
-import { FILES } from '../mock-data';
 import { WorkerService } from '../worker.service';
 
 @Component({
@@ -22,8 +21,7 @@ export class EditorComponent implements OnInit {
   files = [];
 
   ngOnInit(): void {
-    if(this.worker.workspace_isScratch) this.files = FILES;
-    else this.files = this.worker.workspace_structure;
+    this.files = this.worker.workspace_structure;
   }
 
   // editor variables
@@ -56,10 +54,11 @@ export class EditorComponent implements OnInit {
     this.able = false;
   }
 
-  s(code: string, name: string, lang: string): void{
+  s(code: string, name: string, lang: string, path: string): void{
     this.worker.openFile_body = code;
     this.worker.openFile_name = name;
     this.worker.openFile_lang = lang;
+    this.worker.openFile_path = path;
   }
 
   save(): void {

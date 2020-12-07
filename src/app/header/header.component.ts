@@ -10,7 +10,7 @@ import { FormService } from '../form.service';
 })
 export class HeaderComponent implements OnInit {
  
-  constructor(public worker: WorkerService, public router: Router, private formService: FormService,) { }
+  constructor(public worker: WorkerService, public router: Router, public formService: FormService) { }
 
   ngOnInit(): void {
   }
@@ -18,8 +18,8 @@ export class HeaderComponent implements OnInit {
   logout(): void{
     this.formService.logout().subscribe(
       ()=>{
-        this.formService.TOKEN = null;
-        this.formService.USERNAME = null;
+        this.formService.TOKEN = '';
+        this.formService.USERNAME = '';
         this.router.navigate(['/login']);
       }
     )

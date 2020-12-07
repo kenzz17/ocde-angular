@@ -1,10 +1,12 @@
 <div class="float-container" style="position: absolute;top: 8%; right: 0; bottom: 0; left: 0;">
-    <div style="position: absolute; top: 1%; right: 84.6%; bottom: 2%; left: 0.2%; border: 2px solid gray; border-radius: 2%; padding: 0.2%;">
+    <div *ngIf="!worker.workspace_isScratch" style="position: absolute; top: 1%; right: 84.6%; bottom: 2%; left: 0.2%; border: 2px solid gray; border-radius: 2%; padding: 0.2%;">
         <div class="header">
             Files<button class="add" (click)="add()">+</button>
         </div>
         <div *ngFor="let file of files" >
-            <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" (click)="s(file.body,file.name, file.lang)">
+            <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
+                (click)="s(file.body,file.name,file.lang,file.path)"
+            >
                 {{file.name}}
             </button>
             <input type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">

@@ -1,4 +1,4 @@
-<mat-toolbar style="height: 8%; background-color: rgb(0, 30, 60);">
+<mat-toolbar *ngIf="formService.TOKEN!=''" style="height: 8%; background-color: rgb(0, 30, 60);">
     <span>
         <button mat-button routerLink="home" routerLinkActive="green-txt">
             Home
@@ -11,14 +11,26 @@
     </span>
     <span *ngIf="router.url==='/editor'">
         <small *ngIf='worker.workspace_isScratch' style="border: 2px solid gray; border-radius: 6px; margin-left: 100px; padding: 2%;">
-            {{worker.openFile_name}}
+            {{formService.USERNAME}}/scratchFiles : : {{worker.openFile_name}}
         </small>
         <small *ngIf='!worker.workspace_isScratch' style="border: 2px solid gray; border-radius: 6px; margin-left: 100px; padding: 2%;">
-            {{worker.workspace_name}} :: {{worker.openFile_path}}/{{worker.openFile_name}}
+            {{formService.USERNAME}}/{{worker.workspace_name}} : : {{worker.openFile_path}}/{{worker.openFile_name}}
         </small>
     </span>
     <span class="example-spacer"></span>
     <span>
         <button mat-button style="color: red;" (click)="logout()">Logout</button>
+    </span>
+</mat-toolbar>
+<mat-toolbar *ngIf="formService.TOKEN==''" style="height: 8%; background-color: rgb(0, 30, 60);">
+    <span>
+        <button mat-button routerLink="login" routerLinkActive="green-txt">
+            Login/Signup
+        </button>
+    </span>
+    <span>
+        <button mat-button routerLink="editor" routerLinkActive="green-txt">
+            Workspace
+        </button>
     </span>
 </mat-toolbar>
