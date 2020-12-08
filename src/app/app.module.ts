@@ -28,6 +28,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { RegComponent } from './reg/reg.component';
+import { PasschangeComponent } from './passchange/passchange.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { RegComponent } from './reg/reg.component';
     EditorComponent,
     LoginComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    PasschangeComponent
   ],
   imports: [
     BrowserModule,

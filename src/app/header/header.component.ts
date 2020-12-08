@@ -32,4 +32,8 @@ export class HeaderComponent implements OnInit {
     )
   }
 
+  change(){
+    this.router.navigate(['/passchange']);
+  }
+
 }
