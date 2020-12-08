@@ -67,32 +67,26 @@ export class EditorComponent implements OnInit {
 
   submit(): void {
     this.able = true;
-    if(this.worker.workspace_isScratch){
-      this.inp.lang = this.worker.openFile_lang;
-      this.inp.code = this.worker.openFile_body;
-      this.inp.stdin = this.stdin;
-      this.compileService.compile_v1(this.inp)
-        .subscribe(data => this.show(data));
-    }
-    else {
-      this.compileService.compile_v2({
-        code: this.worker.openFile_body,
-        stdin: this.stdin,
-        lang: this.worker.openFile_lang,
-        passwd: '314159kenzz17',
-        helper: this.worker.workspace_structure
-      }).subscribe(data => this.show(data))
-    }
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.token = this.currentUser.token;
-    this.username = this.currentUser.name;     
-    this.httpOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Token " + this.token
-      })
-    }
-    if(this.token!='') this.save();
+    this.save();
+    setTimeout(()=>{
+      if(this.worker.workspace_isScratch){
+        this.inp.lang = this.worker.openFile_lang;
+        this.inp.code = this.worker.openFile_body;
+        this.inp.stdin = this.stdin;
+        this.compileService.compile_v1(this.inp)
+          .subscribe(data => this.show(data));
+      }
+      else {
+        this.compileService.compile_v3({
+          name: this.worker.openFile_name,
+          path: this.worker.openFile_path,
+          stdin: this.stdin,
+          lang: this.worker.openFile_lang,
+          passwd: '314159kenzz17',
+          helper: this.worker.workspace_structure
+        }).subscribe(data => this.show(data))
+      }
+    },2000)
   }
 
   show(data: Out): void {
@@ -171,8 +165,7 @@ export class EditorComponent implements OnInit {
         () => this.openBar('Unable to delete file')
       )
   };
-
-  // hardcoded path to '' 
+ 
   fin_add(): void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = this.currentUser.token;
@@ -189,15 +182,17 @@ export class EditorComponent implements OnInit {
         return this.openBar('File with the same name already exits!');
     }
     this.http.post<JSON>("http://52.187.32.163:8000/api/projects/", {
-      name: store, projectname: this.worker.workspace_name,
-      relpath: '',
+      name: store.split('/').slice(-1)[0],
+      projectname: this.worker.workspace_name,
+      relpath: store.split('/').slice(0,-1).join('/'),
       lang: store.split('.').slice(-1)[0],
       body: store.split('.').slice(-1)[0] == 'cpp' ?
         '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}' : ''
     }, this.httpOption).subscribe(
       () => this.worker.workspace_structure.push(
         {
-          name: store, path: '',
+          name: store.split('/').slice(-1)[0],
+          path: store.split('/').slice(0,-1).join('/'),
           lang: store.split('.').slice(-1)[0],
           body: store.split('.').slice(-1)[0] == 'cpp' ?
             '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}' : ''

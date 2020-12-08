@@ -126,6 +126,7 @@ export class HomeComponent implements OnInit {
   }
 
   new_file = '';
+  init_file = '';
   is_add = false; is_Project = false;
   fin_add(): void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -138,13 +139,16 @@ export class HomeComponent implements OnInit {
       })
     }
     const store = this.new_file;
+    const init_store = this.init_file;
     if (this.is_Project) {
       //upload new folder
       //if success : this.projects_list.push(this.new_file);
       if(this.projects_list.includes(store)) return this.openBar('Project with the same name already exits!');
       this.http.post<JSON>("http://52.187.32.163:8000/api/projects/", {
-        name: 'main.cpp', projectname: store, relpath: '', lang: 'cpp',
-        body: '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}'
+        name: init_store, projectname: store, relpath: '',
+        lang: init_store.split('.').slice(-1)[0],
+        body: init_store.split('.').slice(-1)[0] == 'cpp' ?
+          '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}':''
       }, this.httpOption).subscribe(
         () => this.projects_list.push(store),
         (data: any) => this.openBar(data.error.message || 'Unable to create new project')
@@ -165,6 +169,7 @@ export class HomeComponent implements OnInit {
       );
     }
     this.new_file = '';
+    this.init_file = '';
     this.is_add = false;
   }
 
