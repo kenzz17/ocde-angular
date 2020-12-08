@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
             this.formService.TOKEN = obj["token"];
             this.formService.USERNAME = this.feedbackForm.get("username").value;
             this.openBar("Login Successful");
-            this.route.navigate(['/editor'])
+            this.route.navigate(['/home'])
           }
         },(error)=>{
           var obj = JSON.parse(JSON.stringify(error));

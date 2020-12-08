@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { WorkerService } from '../worker.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormService } from '../form.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -29,8 +30,8 @@ export class HomeComponent implements OnInit {
       'Authorization': "Token " + this.formService.TOKEN
     })
   }
-  scratch_files_list = [];//FILES.names; //make get request, it gives File[]
-  projects_list = []//PROJECTS.projectlist; //get request gives just names of projects : string[]
+  scratch_files_list = []; //FILES.names; //make get request, it gives File[]
+  projects_list = []; //PROJECTS.projectlist; //get request gives just names of projects : string[]
 
   ngOnInit(): void {
     this.http.post<JSON>("http://52.187.32.163:8000/api/fileget/", {
@@ -66,8 +67,7 @@ export class HomeComponent implements OnInit {
       all: 'False', name: projName
     },
       this.httpOption).subscribe((data: any) => {
-        this.worker.workspace_structure.length = 0;
-        this.worker.workspace_structure.concat(data.data);
+        this.worker.workspace_structure.splice(0, this.worker.workspace_structure.length, ...data.data)
         this.worker.openFile_name = data.data[0].name;
         this.worker.openFile_lang = data.data[0].lang;
         this.worker.openFile_body = data.data[0].body;
@@ -81,26 +81,79 @@ export class HomeComponent implements OnInit {
   new_file = '';
   is_add = false; is_Project = false;
   fin_add(): void {
+    const store = this.new_file;
     if (this.is_Project) {
-      //upload new file
+      //upload new folder
       //if success : this.projects_list.push(this.new_file);
+      if(this.projects_list.includes(store)) return this.openBar('Project with the same name already exits!');
+      this.http.post<JSON>("http://52.187.32.163:8000/api/projects/", {
+        name: 'main.cpp', projectname: store, relpath: '', lang: 'cpp',
+        body: '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}'
+      }, this.httpOption).subscribe(
+        () => this.projects_list.push(store),
+        (data: any) => this.openBar(data.error.message || 'Unable to create new project')
+      );
     }
     else {
-      //upload folder
+      //upload file
       //if success : this.scratch_files_list.push(this.new_file)
-
-      //lang: this.new_file.split('.').slice(-1)[0]
-      //name: this.new_file
+      if(this.scratch_files_list.includes(store)) return this.openBar('File with the same name already exits!');
+      this.http.post<JSON>("http://52.187.32.163:8000/api/files/", {
+        name: store,
+        lang: store.split('.').slice(-1)[0],
+        body: store.split('.').slice(-1)[0] == 'cpp' ?
+          '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}' : ''
+      }, this.httpOption).subscribe(
+        () => this.scratch_files_list.push(store),
+        (data: any) => this.openBar(data.error.error || 'Unable to create new file')
+      );
     }
     this.new_file = '';
     this.is_add = false;
+  }
+
+  delFullProj(projName: string) {
+    this.http.post<JSON>(
+      "http://52.187.32.163:8000/api/projectdelete/", {
+      all: 'True', projectname: projName, filename: 'arbit'
+    },
+      this.httpOption).subscribe(
+        (data:any) => {
+          this.projects_list.forEach((ele, idx) => {
+            if (ele == projName) this.projects_list.splice(idx, 1);
+          })
+          this.openBar(data.message);
+        },
+        () => this.openBar('Unable to delete file')
+      )
+  }
+
+  delScratch(fileName: string) {
+    this.http.post<JSON>(
+      "http://52.187.32.163:8000/api/filedelete/", {
+      all: 'False', name: fileName
+    },
+      this.httpOption).subscribe(
+        (data:any) => {
+          this.scratch_files_list.forEach((ele, idx) => {
+            if (ele == fileName) this.scratch_files_list.splice(idx, 1);
+          })
+          this.openBar(data.message);
+        },
+        () => this.openBar('Unable to delete file')
+      )
+  }
+
+  public openBar(message: string) {
+    this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
   constructor(
     public worker: WorkerService,
     public router: Router,
     public http: HttpClient,
-    public formService: FormService
+    public formService: FormService,
+    private msgBar: MatSnackBar
   ) { }
 
 }

@@ -20,7 +20,7 @@
             </button>
         </mat-card>
     </div>
-    <div *ngFor="let file of scratch_files_list">
+    <div *ngFor="let file of scratch_files_list.slice().reverse()">
         <mat-card style="margin-bottom: 5px; margin-right: 5px; display: flex; padding: 0%;">
             <div style="margin-top: 2%; margin-left: 3%;">
                 <h3>{{file}}</h3>
@@ -29,13 +29,13 @@
                 <button mat-button (click)="gotoScratch(file)" style="color: cyan;">
                     Open File <mat-icon>open_in_new</mat-icon>
                 </button>
-                <button mat-button (click)="gotoScratch(file)" style="color: red;">
+                <button mat-button (click)="delScratch(file)" style="color: red;">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
         </mat-card>
     </div>
-    <div *ngFor="let proj of projects_list">
+    <div *ngFor="let proj of projects_list.slice().reverse()">
         <mat-card style="margin-bottom: 5px; margin-right: 5px; display: flex; padding: 0%;">
                 <div style="margin-top: 2%; margin-left: 3%;">
                     <h3>{{proj}}</h3>
@@ -44,7 +44,7 @@
                     <button mat-button (click)="gotoProj(proj)" style="color: chartreuse;">
                         Open Project <mat-icon>open_in_new</mat-icon>
                     </button>
-                    <button mat-button (click)="gotoProj(proj)" style="color: red;">
+                    <button mat-button (click)="delFullProj(proj)" style="color: red;">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Code } from '../Code';
 import { CompilerService } from '../compiler.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Out } from '../Out';
 import { WorkerService } from '../worker.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FormService } from '../form.service';
 
 @Component({
   selector: 'app-editor',
@@ -11,33 +13,32 @@ import { WorkerService } from '../worker.service';
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
-  new_file='';
-  is_add=false;
-  new_code = '';
-  create = '';
-
-  // no subdirectories -- `path` ignored 
-  // I guess the declaration has to be in ngOnInit 
-  files = [];
+  new_file = '';
+  is_add = false;
 
   ngOnInit(): void {
-    this.files = this.worker.workspace_structure;
   }
 
   // editor variables
   stdin = '';
   able = false;
   inp: Code = { passwd: '314159kenzz17', lang: 'cpp', code: '', stdin: '' };
-  out: Out = {stdout: '', stderr: '', error: ''};
+  out: Out = { stdout: '', stderr: '', error: '' };
   //set language for syntax highlighting here
-  editorOptions1 = {theme: 'vs-dark', language: 'cpp'};
-  editorOptions2 = {theme: 'vs-dark', language: 'python'};
-  editorOptions3 = {theme: 'vs-dark', language: 'javascript'};
-  
+  editorOptions1 = { theme: 'vs-dark', language: 'cpp' };
+  editorOptions2 = { theme: 'vs-dark', language: 'python' };
+  editorOptions3 = { theme: 'vs-dark', language: 'javascript' };
+
+  public openBar(message: string) {
+    this.msgBar.open(message, undefined, { duration: 3000, });
+  }
+
   constructor(
     private compileService: CompilerService,
-    private modalService: NgbModal,
-    public worker: WorkerService
+    public worker: WorkerService,
+    private msgBar: MatSnackBar,
+    public formService: FormService,
+    public http: HttpClient,
   ) { }
 
   submit(): void {
@@ -47,6 +48,7 @@ export class EditorComponent implements OnInit {
     this.inp.stdin = this.stdin;
     this.compileService.compile(this.inp)
       .subscribe(data => this.show(data));
+    this.save();
   }
 
   show(data: Out): void {
@@ -54,46 +56,82 @@ export class EditorComponent implements OnInit {
     this.able = false;
   }
 
-  s(code: string, name: string, lang: string, path: string): void{
+  openInEditor(code: string, name: string, lang: string, path: string): void {
     this.worker.openFile_body = code;
     this.worker.openFile_name = name;
     this.worker.openFile_lang = lang;
     this.worker.openFile_path = path;
   }
 
-  save(): void {
-    for (let index = 0; index < this.files.length; index++) {
-      if(this.files[index].name==this.worker.openFile_name){
-        this.files[index].body=this.worker.openFile_body;
-        return;
-      }
-    }
-    this.create = 'save';
-    this.is_add = true;              
-    this.new_code = this.worker.openFile_body;
-  }
-  
-  del(name: string): void{
-    this.files.forEach((ele,idx)=>{
-      if(ele.name==name)this.files.splice(idx,1);
+  httpOption = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Token " + this.formService.TOKEN
     })
-    if(name==this.worker.openFile_name){
-      this.worker.openFile_name='untitled';
+  }
+
+  save(): void {
+    if (this.worker.workspace_isScratch) {
+      this.http.post<JSON>("http://52.187.32.163:8000/api/files/", {
+        name: this.worker.openFile_name, lang: this.worker.openFile_lang,
+        body: this.worker.openFile_body
+      }, this.httpOption).subscribe(
+        (data: any) => this.openBar(data.message),
+        (data: any) => this.openBar(data.error.error || 'Unable to save file')
+      );
+    }
+    else {
+      this.http.post<JSON>("http://52.187.32.163:8000/api/projects/", {
+        name: this.worker.openFile_name, projectname: this.worker.workspace_name,
+        relpath: this.worker.openFile_path, lang: this.worker.openFile_lang,
+        body: this.worker.openFile_body
+      }, this.httpOption).subscribe(
+        (data: any) => this.openBar(data.message),
+        (data: any) => this.openBar(data.error.message || 'Unable to save file')
+      );
     }
   }
 
-  add(): void{
-    this.create = 'add'
-    this.is_add = true;
-    this.new_code = '';
-  }
+  del(name: string): void {
+    this.http.post<JSON>(
+      "http://52.187.32.163:8000/api/projectdelete/", {
+      all: 'False', projectname: this.worker.workspace_name, filename: name
+    },
+      this.httpOption).subscribe(
+        (data: any) => {
+          this.worker.workspace_structure.forEach((ele, idx) => {
+            if (ele.name == name) this.worker.workspace_structure.splice(idx, 1);
+          })
+          this.openBar(data.message);
+        },
+        () => this.openBar('Unable to delete file')
+      )
+  };
 
-  fin_add(): void{
-    this.files.push({
-      name: this.new_file,
-      body: this.new_code,
-      lang: this.new_file.split('.').slice(-1)[0]
-    });
+  // hardcoded path to '' 
+  fin_add(): void {
+    const store = this.new_file;
+    for (let i = 0; i < this.worker.workspace_structure.length; i++) {
+      if (this.worker.workspace_structure[i].name == store)
+        return this.openBar('File with the same name already exits!');
+    }
+    this.http.post<JSON>("http://52.187.32.163:8000/api/projects/", {
+      name: store, projectname: this.worker.workspace_name,
+      relpath: '',
+      lang: store.split('.').slice(-1)[0],
+      body: store.split('.').slice(-1)[0] == 'cpp' ?
+        '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}' : ''
+    }, this.httpOption).subscribe(
+      () => this.worker.workspace_structure.push(
+        {
+          name: store, path: '',
+          lang: store.split('.').slice(-1)[0],
+          body: store.split('.').slice(-1)[0] == 'cpp' ?
+            '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}' : ''
+        }
+      ),
+      (data: any) => this.openBar(data.error.message || 'Unable to create file')
+    );
     this.new_file = '';
     this.is_add = false;
   }

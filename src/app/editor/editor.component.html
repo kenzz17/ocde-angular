@@ -1,23 +1,27 @@
 <div class="float-container" style="position: absolute;top: 8%; right: 0; bottom: 0; left: 0;">
-    <div *ngIf="!worker.workspace_isScratch" style="position: absolute; top: 1%; right: 84.6%; bottom: 2%; left: 0.2%; border: 2px solid gray; border-radius: 2%; padding: 0.2%;">
-        <div class="header">
-            Files<button class="add" (click)="add()">+</button>
-        </div>
-        <div *ngFor="let file of files" >
-            <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
-                (click)="s(file.body,file.name,file.lang,file.path)"
-            >
-                {{file.name}}
-            </button>
-            <input type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">
-        </div>
-        <div *ngIf="is_add">
-            <input [(ngModel)]="new_file" style="width: 60%;" required placeholder="name" id="name"/>
-            <button type="button" [disabled]="new_file.trim()==''" style="float: right; width: 35%" (click)="fin_add()">{{create}}</button>
-        </div>
-        <button mat-button class="bigger-bordered1" style="margin-left: 20%;margin-top: 35%;" (click)="save()">
-            Save
+    <div style="position: absolute; top: 1%; right: 84.6%; bottom: 2%; left: 0.2%; border: 2px solid gray; border-radius: 2%; padding: 0.2%;">
+        <button mat-button class="bigger-bordered1" (click)="save()">
+            Save Changes
         </button>
+        <div *ngIf="!worker.workspace_isScratch">
+            <div class="header">
+                Files<button class="add" (click)="is_add=true">+</button>
+            </div>
+            <div *ngFor="let file of this.worker.workspace_structure" >
+                <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
+                    (click)="openInEditor(file.body,file.name,file.lang,file.path)"
+                >
+                    {{file.name}}
+                </button>
+                <input type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">
+            </div>
+            <div *ngIf="is_add">
+                <input [(ngModel)]="new_file" style="width: 60%;" required placeholder="name" id="name"/>
+                <button type="button" [disabled]="new_file.trim()==''" style="float: right; width: 35%" (click)="fin_add()">
+                    Confirm
+                </button>
+            </div>
+        </div>
     </div>
     <div *ngIf="worker.openFile_lang=='cpp'" style="position: absolute; top: 1%; right: 25%; bottom: 0; left: 16%;">
         <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="worker.openFile_body"></ngx-monaco-editor>

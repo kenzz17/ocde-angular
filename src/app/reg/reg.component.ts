@@ -27,7 +27,7 @@ export class RegComponent implements OnInit {
             this.formService.TOKEN = obj["token"];
             this.formService.USERNAME = obj["user"]["username"];
             this.openBar("Registration Successful");
-            this.route.navigate(['/editor'])
+            this.route.navigate(['/home'])
           }
         },(error)=>{
           var obj = JSON.parse(JSON.stringify(error));
