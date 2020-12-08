@@ -15,24 +15,9 @@
             <button mat-button (click)="is_add=false; new_file=''" style="float: right; line-height: 125%">
                 Cancel
             </button>
-            <button mat-button (click)="fin_add()" [disabled]="new_file.trim()==''" style="float: right; line-height: 125%">
+            <button mat-button (click)="fin_add()" [disabled]="new_file.trim()=='' || (!is_Project && new_file.indexOf('.')==-1)" style="float: right; line-height: 125%">
                 Confirm
             </button>
-        </mat-card>
-    </div>
-    <div *ngFor="let file of scratch_files_list.slice().reverse()">
-        <mat-card style="margin-bottom: 5px; margin-right: 5px; display: flex; padding: 0%;">
-            <div style="margin-top: 2%; margin-left: 3%;">
-                <h3>{{file}}</h3>
-            </div>
-            <div style="margin-left: auto; margin-top: 1.5%;">
-                <button mat-button (click)="gotoScratch(file)" style="color: cyan;">
-                    Open File <mat-icon>open_in_new</mat-icon>
-                </button>
-                <button mat-button (click)="delScratch(file)" style="color: red;">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
         </mat-card>
     </div>
     <div *ngFor="let proj of projects_list.slice().reverse()">
@@ -48,6 +33,21 @@
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
+        </mat-card>
+    </div>
+    <div *ngFor="let file of scratch_files_list.slice().reverse()">
+        <mat-card style="margin-bottom: 5px; margin-right: 5px; display: flex; padding: 0%;">
+            <div style="margin-top: 2%; margin-left: 3%;">
+                <h3>{{file}}</h3>
+            </div>
+            <div style="margin-left: auto; margin-top: 1.5%;">
+                <button mat-button (click)="gotoScratch(file)" style="color: cyan;">
+                    Open File <mat-icon>open_in_new</mat-icon>
+                </button>
+                <button mat-button (click)="delScratch(file)" style="color: red;">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </mat-card>
     </div>
 </div>
