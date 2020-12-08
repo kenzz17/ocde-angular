@@ -1,0 +1,34 @@
+<div class="big-container"> 
+    <small style="padding: 10%; font-size: x-large;">
+        Hello {{formService.USERNAME}},&nbsp;&nbsp;👋
+    </small>
+    <div style="padding: 5%; font-size: medium; color: aqua; cursor: pointer;" (click)="change()">
+        change password?
+    </div>
+    <div *ngIf="x">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <form [formGroup]="feedbackForm">
+            <mat-form-field appearance="outline" [floatLabel]="'Old Password'">
+                <mat-label>Old Password *</mat-label>
+                <input matInput type="password" formControlName="old_password">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" [floatLabel]="'New Password'">
+                <mat-label>New Password *</mat-label>
+                <input matInput type="password" formControlName="new_password">
+            </mat-form-field>
+            <br>
+            <button mat-button class="bigger-bordered" (click)="onSubmit()">
+                Change Password
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-button class="bigger-bordered" (click)="cancel()">
+                Cancel
+            </button>
+        </form>
+    </div>
+</div>
