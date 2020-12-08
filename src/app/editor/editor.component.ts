@@ -66,27 +66,33 @@ export class EditorComponent implements OnInit {
   
 
   submit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.able = true;
-    this.save();
-    setTimeout(()=>{
-      if(this.worker.workspace_isScratch){
-        this.inp.lang = this.worker.openFile_lang;
-        this.inp.code = this.worker.openFile_body;
-        this.inp.stdin = this.stdin;
-        this.compileService.compile_v1(this.inp)
-          .subscribe(data => this.show(data));
-      }
-      else {
-        this.compileService.compile_v3({
-          name: this.worker.openFile_name,
-          path: this.worker.openFile_path,
-          stdin: this.stdin,
-          lang: this.worker.openFile_lang,
-          passwd: '314159kenzz17',
-          helper: this.worker.workspace_structure
-        }).subscribe(data => this.show(data))
-      }
-    },2000)
+    if(this.worker.workspace_isScratch){
+      this.inp.lang = this.worker.openFile_lang;
+      this.inp.code = this.worker.openFile_body;
+      this.inp.stdin = this.stdin;
+      this.compileService.compile_v1(this.inp)
+        .subscribe(data => this.show(data));
+    }
+    else {
+      this.compileService.compile_v3({
+        name: this.worker.openFile_name,
+        path: this.worker.openFile_path,
+        stdin: this.stdin,
+        lang: this.worker.openFile_lang,
+        passwd: '314159kenzz17',
+        helper: this.worker.workspace_structure
+      }).subscribe(data => this.show(data))
+    }
   }
 
   show(data: Out): void {
