@@ -23,13 +23,33 @@ export class HomeComponent implements OnInit {
     if scratch file is opened workspace_structure or this.files stores other 
     scratch files
   */
-
-  httpOption = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': "Token " + this.formService.TOKEN
-    })
+  currentUser: any;
+  token= "";
+  username= "";
+  httpOption: any;
+  constructor(
+    public worker: WorkerService,
+    public router: Router,
+    public http: HttpClient,
+    public formService: FormService,
+    private msgBar: MatSnackBar
+  ) { 
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+      this.httpOption = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': "Token " + this.token
+        })
+     }
+    }
   }
+
   scratch_files_list = []; //FILES.names; //make get request, it gives File[]
   projects_list = []; //PROJECTS.projectlist; //get request gives just names of projects : string[]
 
@@ -170,12 +190,6 @@ export class HomeComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(
-    public worker: WorkerService,
-    public router: Router,
-    public http: HttpClient,
-    public formService: FormService,
-    private msgBar: MatSnackBar
-  ) { }
+  
 
 }

@@ -19,6 +19,36 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  currentUser: any;
+  token= "";
+  username= "";
+  httpOption: any;
+
+  constructor(
+    private compileService: CompilerService,
+    public worker: WorkerService,
+    private msgBar: MatSnackBar,
+    public formService: FormService,
+    public http: HttpClient,
+  ) { 
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;     
+      this.httpOption = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': "Token " + this.token
+        })
+      }
+    }
+  }
+  
+
   // editor variables
   stdin = '';
   able = false;
@@ -33,13 +63,7 @@ export class EditorComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(
-    private compileService: CompilerService,
-    public worker: WorkerService,
-    private msgBar: MatSnackBar,
-    public formService: FormService,
-    public http: HttpClient,
-  ) { }
+  
 
   submit(): void {
     this.able = true;
@@ -59,7 +83,7 @@ export class EditorComponent implements OnInit {
         helper: this.worker.workspace_structure
       }).subscribe(data => this.show(data))
     }
-    if(this.formService.TOKEN!='') this.save();
+    if(this.token!='') this.save();
   }
 
   show(data: Out): void {
@@ -74,12 +98,6 @@ export class EditorComponent implements OnInit {
     this.worker.openFile_path = path;
   }
 
-  httpOption = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': "Token " + this.formService.TOKEN
-    })
-  }
 
   save(): void {
     if (this.worker.workspace_isScratch) {

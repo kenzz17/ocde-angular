@@ -13,6 +13,9 @@ export class PasschangeComponent implements OnInit {
 
   x = false;
 
+  currentUser: any;
+  username = "";
+  token = "";
   
   feedbackForm = new FormGroup({
     old_password: new FormControl('',Validators.required),
@@ -23,11 +26,20 @@ export class PasschangeComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(public formService: FormService, private msgBar: MatSnackBar, private route:Router) { }
+  constructor(public formService: FormService, private msgBar: MatSnackBar, private route:Router) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+    }
+   }
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
-      this.formService.change(JSON.parse(JSON.stringify(this.feedbackForm.value))).subscribe(
+      this.formService.change(JSON.parse(JSON.stringify(this.feedbackForm.value)),this.token).subscribe(
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("message" in obj)==true){

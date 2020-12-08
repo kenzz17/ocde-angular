@@ -24,8 +24,9 @@ export class RegComponent implements OnInit {
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
-            this.formService.TOKEN = obj["token"];
-            this.formService.USERNAME = obj["user"]["username"];
+            localStorage.setItem('currentUser', JSON.stringify({ token: obj["token"], name: obj["user"]["username"] }));
+            //this.formService.TOKEN = obj["token"];
+            //this.formService.USERNAME = obj["user"]["username"];
             this.openBar("Registration Successful");
             this.route.navigate(['/home'])
           }

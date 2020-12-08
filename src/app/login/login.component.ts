@@ -30,8 +30,9 @@ export class LoginComponent implements OnInit {
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
-            this.formService.TOKEN = obj["token"];
-            this.formService.USERNAME = this.feedbackForm.get("username").value;
+            localStorage.setItem('currentUser', JSON.stringify({ token: obj["token"], name: this.feedbackForm.get("username").value }));
+            //this.formService.TOKEN = obj["token"];
+            //this.formService.USERNAME = this.feedbackForm.get("username").value;
             this.openBar("Login Successful");
             this.route.navigate(['/home'])
           }
