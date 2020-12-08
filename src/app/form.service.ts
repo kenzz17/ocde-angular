@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders, } from '@angular/common/http';
-import { Observable, pipe } from 'rxjs';
+import { Observable } from 'rxjs';
 
 
 const httpOptions = {
@@ -15,8 +15,8 @@ const httpOptions = {
 })
 export class FormService {
 
-  public TOKEN: string;
-  public USERNAME: string;
+  public TOKEN: string = '';
+  public USERNAME: string = '';
 
   constructor(private http: HttpClient) { }
 
@@ -35,6 +35,6 @@ export class FormService {
         'Authorization': "Token " + this.TOKEN
       })
     }
-    return this.http.post<JSON>("http://52.187.32.163:8000/api/logout/",{},httpOption);
+    return this.http.post<JSON>("http://52.187.32.163:8000/api/logoutall/",{},httpOption);
   }
 }

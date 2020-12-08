@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) { }
+  constructor(public formService: FormService, private msgBar: MatSnackBar, private route:Router) { }
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
@@ -31,10 +31,9 @@ export class LoginComponent implements OnInit {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
             this.formService.TOKEN = obj["token"];
-            this.feedbackForm.get
             this.formService.USERNAME = this.feedbackForm.get("username").value;
             this.openBar("Login Successful");
-            this.route.navigate(['/editor'])
+            this.route.navigate(['/home'])
           }
         },(error)=>{
           var obj = JSON.parse(JSON.stringify(error));

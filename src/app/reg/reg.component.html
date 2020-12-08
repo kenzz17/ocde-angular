@@ -1,7 +1,7 @@
 <div class="big-container">
     <form [formGroup]="feedbackForm">
         <mat-form-field appearance="outline" [floatLabel]="'UserName'">
-            <mat-label>UserName *</mat-label>
+            <mat-label>Username *</mat-label>
             <input matInput formControlName="username">
         </mat-form-field>
         <br>
@@ -12,7 +12,7 @@
         <br>
         <mat-form-field appearance="outline" [floatLabel]="'Password'">
             <mat-label>Password *</mat-label>
-            <input matInput formControlName="password">
+            <input matInput type="password" formControlName="password">
         </mat-form-field>
         <br>
         <button mat-button class="bigger-bordered" (click)="onSubmit()">
@@ -22,10 +22,10 @@
 </div>
 <div class="container">
     <div (click)="login()" class="text1">
-        already a user?
+        Already a User?
     </div>
     or
     <div (click)="guestlogin()" class="text3">
-        continue as guest
+        Continue As Guest
     </div>
 </div>
