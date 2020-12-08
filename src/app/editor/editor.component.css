@@ -70,14 +70,6 @@
   text-align: left;
 }
 
-.files:hover {
+.files:hover:not([disabled]) {
   color: lightblue;
-}
-
-.files:focus {
-  background-color: gray;
-}
-
-.files1:focus {
-  background-color: gray;
 }

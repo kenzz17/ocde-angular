@@ -8,12 +8,12 @@
                 Files<button class="add" (click)="is_add=true">+</button>
             </div>
             <div *ngFor="let file of this.worker.workspace_structure" >
-                <button mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
+                <button [disabled]="file.name==worker.openFile_name" mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
                     (click)="openInEditor(file.body,file.name,file.lang,file.path)"
                 >
                     {{file.name}}
                 </button>
-                <input type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">
+                <input *ngIf="file.name!=worker.openFile_name" type="image" src="assets/delete.png" alt="del" width="10%" style="float: right;" (click)="del(file.name)">
             </div>
             <div *ngIf="is_add">
                 <input [(ngModel)]="new_file" style="width: 60%;" required placeholder="name" id="name"/>

@@ -18,6 +18,11 @@
         </small>
     </span>
     <span class="example-spacer"></span>
+    <span *ngIf="router.url==='/home'">
+        <small style="border: 2px chartreuse solid ; border-radius: 6px; margin-right: 100px; padding: 2%;">
+            Hello {{formService.USERNAME}},&nbsp;&nbsp;👋
+        </small>
+    </span>
     <span>
         <button mat-button style="color: red;" (click)="logout()">Logout</button>
     </span>

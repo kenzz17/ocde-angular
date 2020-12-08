@@ -43,12 +43,23 @@ export class EditorComponent implements OnInit {
 
   submit(): void {
     this.able = true;
-    this.inp.lang = this.worker.openFile_lang;
-    this.inp.code = this.worker.openFile_body;
-    this.inp.stdin = this.stdin;
-    this.compileService.compile(this.inp)
-      .subscribe(data => this.show(data));
-    this.save();
+    if(this.worker.workspace_isScratch){
+      this.inp.lang = this.worker.openFile_lang;
+      this.inp.code = this.worker.openFile_body;
+      this.inp.stdin = this.stdin;
+      this.compileService.compile_v1(this.inp)
+        .subscribe(data => this.show(data));
+    }
+    else {
+      this.compileService.compile_v2({
+        code: this.worker.openFile_body,
+        stdin: this.stdin,
+        lang: this.worker.openFile_lang,
+        passwd: '314159kenzz17',
+        helper: this.worker.workspace_structure
+      }).subscribe(data => this.show(data))
+    }
+    if(this.formService.TOKEN!='') this.save();
   }
 
   show(data: Out): void {
@@ -86,7 +97,15 @@ export class EditorComponent implements OnInit {
         relpath: this.worker.openFile_path, lang: this.worker.openFile_lang,
         body: this.worker.openFile_body
       }, this.httpOption).subscribe(
-        (data: any) => this.openBar(data.message),
+        (data: any) => {
+          for (let i = 0; i < this.worker.workspace_structure.length; i++) {
+            if (this.worker.workspace_structure[i].name == this.worker.openFile_name){
+              this.worker.workspace_structure[i].body = this.worker.openFile_body;
+              break;
+            }
+          }
+          this.openBar(data.message);
+        },
         (data: any) => this.openBar(data.error.message || 'Unable to save file')
       );
     }
