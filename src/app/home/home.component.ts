@@ -54,6 +54,15 @@ export class HomeComponent implements OnInit {
   projects_list = []; //PROJECTS.projectlist; //get request gives just names of projects : string[]
 
   ngOnInit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>("http://52.187.32.163:8000/api/fileget/", {
       all: 'True', name: 'arbit'
     },
@@ -66,6 +75,15 @@ export class HomeComponent implements OnInit {
   }
 
   gotoScratch(fileName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.worker.openFile_name = fileName;
     //make get by `fileName`
     this.http.post<JSON>("http://52.187.32.163:8000/api/fileget/", {
@@ -81,6 +99,15 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/editor');
   }
   gotoProj(projName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     //make get request to `projName` project
     //may get data like {'name':projName, 'files':[..an array of files (ProjFile[])..]}
     this.http.post<JSON>("http://52.187.32.163:8000/api/projectget/", {
@@ -101,6 +128,15 @@ export class HomeComponent implements OnInit {
   new_file = '';
   is_add = false; is_Project = false;
   fin_add(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     const store = this.new_file;
     if (this.is_Project) {
       //upload new folder
@@ -133,6 +169,15 @@ export class HomeComponent implements OnInit {
   }
 
   delFullProj(projName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>(
       "http://52.187.32.163:8000/api/projectdelete/", {
       all: 'True', projectname: projName, filename: 'arbit'
@@ -160,6 +205,15 @@ export class HomeComponent implements OnInit {
   }
 
   delScratch(fileName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>(
       "http://52.187.32.163:8000/api/filedelete/", {
       all: 'False', name: fileName

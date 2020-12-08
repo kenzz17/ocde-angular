@@ -83,6 +83,15 @@ export class EditorComponent implements OnInit {
         helper: this.worker.workspace_structure
       }).subscribe(data => this.show(data))
     }
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     if(this.token!='') this.save();
   }
 
@@ -100,6 +109,15 @@ export class EditorComponent implements OnInit {
 
 
   save(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     if (this.worker.workspace_isScratch) {
       this.http.post<JSON>("http://52.187.32.163:8000/api/files/", {
         name: this.worker.openFile_name, lang: this.worker.openFile_lang,
@@ -130,6 +148,15 @@ export class EditorComponent implements OnInit {
   }
 
   del(name: string): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>(
       "http://52.187.32.163:8000/api/projectdelete/", {
       all: 'False', projectname: this.worker.workspace_name, filename: name
@@ -147,6 +174,15 @@ export class EditorComponent implements OnInit {
 
   // hardcoded path to '' 
   fin_add(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     const store = this.new_file;
     for (let i = 0; i < this.worker.workspace_structure.length; i++) {
       if (this.worker.workspace_structure[i].name == store)
@@ -171,5 +207,12 @@ export class EditorComponent implements OnInit {
     );
     this.new_file = '';
     this.is_add = false;
+  }
+
+  check(): boolean{
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;
+    return this.token=='';
   }
 }

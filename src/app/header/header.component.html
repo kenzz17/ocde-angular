@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="token!=''" style="height: 8%; background-color: rgb(0, 30, 60);">
+<mat-toolbar *ngIf="!check()" style="height: 8%; background-color: rgb(0, 30, 60);">
     <span>
         <button mat-button routerLink="home" routerLinkActive="green-txt">
             Home
@@ -9,7 +9,7 @@
             Workspace
         </button>
     </span>
-    <span *ngIf="router.url==='/editor'">
+    <span *ngIf="check1('/editor')">
         <small *ngIf='worker.workspace_isScratch' style="border: 2px solid gray; border-radius: 6px; margin-left: 100px; padding: 2%;">
             {{username}}/scratchFiles : : {{worker.openFile_name}}
         </small>
@@ -18,7 +18,7 @@
         </small>
     </span>
     <span class="example-spacer"></span>
-    <span *ngIf="router.url==='/home'">
+    <span *ngIf="check1('/home')">
         <small style="border: 2px chartreuse solid ; border-radius: 6px; margin-right: 100px; padding: 2%;cursor: pointer;" (click)="change()">
             Hello {{username}},&nbsp;&nbsp;👋
         </small>
@@ -27,7 +27,7 @@
         <button mat-button style="color: red;" (click)="logout()">Logout</button>
     </span>
 </mat-toolbar>
-<mat-toolbar *ngIf="token==''" style="height: 8%; background-color: rgb(0, 30, 60);">
+<mat-toolbar *ngIf="check()" style="height: 8%; background-color: rgb(0, 30, 60);">
     <span>
         <button mat-button routerLink="login" routerLinkActive="green-txt">
             Login/Signup

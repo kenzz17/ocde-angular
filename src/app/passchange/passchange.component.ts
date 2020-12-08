@@ -38,6 +38,9 @@ export class PasschangeComponent implements OnInit {
    }
 
   onSubmit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;
     if(this.feedbackForm.valid){
       this.formService.change(JSON.parse(JSON.stringify(this.feedbackForm.value)),this.token).subscribe(
         (res) => {

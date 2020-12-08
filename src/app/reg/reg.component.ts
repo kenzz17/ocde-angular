@@ -17,6 +17,11 @@ export class RegComponent implements OnInit {
     password: new FormControl('',Validators.required)
   });
 
+  
+  currentUser: any;
+  token= "";
+  username= "";
+
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
@@ -46,7 +51,18 @@ export class RegComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) { }
+  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) {
+    
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+      if(this.token!="") this.route.navigate(['/home']);
+    }
+   }
 
   ngOnInit(): void{
   }

@@ -31,6 +31,9 @@ export class HeaderComponent implements OnInit {
 
 
   logout(): void{
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;
     this.formService.logout(this.token).subscribe(
       ()=>{
         localStorage.setItem('currentUser', JSON.stringify({ token: '', name: '' }));
@@ -50,6 +53,20 @@ export class HeaderComponent implements OnInit {
 
   change(){
     this.router.navigate(['/passchange']);
+  }
+
+  check(): boolean{
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;
+    return this.token=='';
+  }
+
+  check1(url: string): boolean{
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;
+    return this.router.url == url;
   }
 
 }
