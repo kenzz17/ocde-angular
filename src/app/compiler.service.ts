@@ -20,17 +20,17 @@ export class CompilerService {
   constructor(private http: HttpClient) { }
 
   private url_v1 = 'http://13.76.187.23:5000/v1';
-  private url_v2 = 'http://13.76.187.23:5000/v2';
+  private url_v3 = 'http://13.76.187.23:5000/v3';
 
   public compile_v1(code: Code): Observable<Out> {
     return this.http.post<Out>(this.url_v1, code, httpOptions)
   }
 
-  public compile_v2(req:{
-    code: string, lang:string, passwd:string, stdin:string,helper:ProjectFile[]
+  public compile_v3(req:{
+    path: string, name: string, lang:string, passwd:string, stdin:string, helper:ProjectFile[]
   }): Observable<Out> 
   {
-    return this.http.post<Out>(this.url_v2, req, httpOptions)
+    return this.http.post<Out>(this.url_v3, req, httpOptions)
   }
 
 }

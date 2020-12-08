@@ -12,27 +12,33 @@
     <div *ngIf="is_add">
         <mat-card style="margin-bottom: 5px; margin-right: 5px;">
             <input [(ngModel)]="new_file" style="line-height: 125%" placeholder="Enter name"/>
-            <button mat-button (click)="is_add=false; new_file=''" style="float: right; line-height: 125%">
+            <input *ngIf="is_Project" [(ngModel)]="init_file" style="line-height: 125%; margin-left: 5px;" placeholder="Initial file"/>
+            <button mat-button (click)="is_add=false; new_file=''; init_file=''" style="float: right; line-height: 125%">
                 Cancel
             </button>
-            <button mat-button (click)="fin_add()" [disabled]="new_file.trim()=='' || (!is_Project && ['cpp','js','py'].indexOf(new_file.split('.').slice(-1)[0])==-1)" style="float: right; line-height: 125%">
+            <button mat-button (click)="fin_add()" 
+                [disabled]="new_file.trim()=='' ||
+                (!is_Project && ['cpp','js','py'].indexOf(new_file.split('.').slice(-1)[0])==-1) ||
+                (is_Project && ['cpp','js','py'].indexOf(init_file.split('.').slice(-1)[0])==-1)"
+                style="float: right; line-height: 125%"
+            >
                 Confirm
             </button>
         </mat-card>
     </div>
     <div *ngFor="let proj of projects_list.slice().reverse()">
         <mat-card style="margin-bottom: 5px; margin-right: 5px; display: flex; padding: 0%;">
-                <div style="margin-top: 2%; margin-left: 3%;">
-                    <h3>{{proj}}</h3>
-                </div>
-                <div style="margin-left: auto; margin-top: 1.5%;">
-                    <button mat-button (click)="gotoProj(proj)" style="color: chartreuse;">
-                        Open Project <mat-icon>open_in_new</mat-icon>
-                    </button>
-                    <button mat-button (click)="delFullProj(proj)" style="color: red;">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
+            <div style="margin-top: 2%; margin-left: 3%;">
+                <h3>{{proj}}</h3>
+            </div>
+            <div style="margin-left: auto; margin-top: 1.5%;">
+                <button mat-button (click)="gotoProj(proj)" style="color: chartreuse;">
+                    Open Project <mat-icon>open_in_new</mat-icon>
+                </button>
+                <button mat-button (click)="delFullProj(proj)" style="color: red;">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </mat-card>
     </div>
     <div *ngFor="let file of scratch_files_list.slice().reverse()">

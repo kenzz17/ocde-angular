@@ -3,9 +3,11 @@
         <button [disabled]="formService.TOKEN==''" mat-button class="bigger-bordered1" (click)="save()">
             Save Changes
         </button>
-        <div *ngIf="!worker.workspace_isScratch">
+        <div *ngIf="!worker.workspace_isScratch; else elseBlock">
             <div class="header">
-                Files<button class="add" (click)="is_add=true">+</button>
+                Files
+                <button *ngIf="!is_add" class="add" (click)="is_add=true">+</button>
+                <button *ngIf="is_add" class="add" (click)="is_add=false; new_file=''">Cancel</button>
             </div>
             <div *ngFor="let file of this.worker.workspace_structure" >
                 <button [disabled]="file.name==worker.openFile_name" mat-button style="border: 1px solid gray; margin-bottom: 1px; line-height: 150%;" type="button" class="files" 
@@ -22,6 +24,11 @@
                 </button>
             </div>
         </div>
+        <ng-template #elseBlock>
+            <div style="width: 100%; text-align: center; margin-top: 5%;">
+                You have not opened a project
+            </div>
+        </ng-template>
     </div>
     <div *ngIf="worker.openFile_lang=='cpp'" style="position: absolute; top: 1%; right: 25%; bottom: 0; left: 16%;">
         <ngx-monaco-editor style="height: 100%;" [options]="editorOptions1" [(ngModel)]="worker.openFile_body"></ngx-monaco-editor>
