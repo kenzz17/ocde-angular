@@ -120,7 +120,18 @@ export class HomeComponent implements OnInit {
       this.httpOption).subscribe(
         (data:any) => {
           this.projects_list.forEach((ele, idx) => {
-            if (ele == projName) this.projects_list.splice(idx, 1);
+            if (ele == projName) {
+              if(projName==this.worker.workspace_name){
+                this.worker.openFile_body = '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}';
+                this.worker.openFile_lang = 'cpp';
+                this.worker.openFile_name = 'untitled.cpp'
+                this.worker.openFile_path = '';
+                this.worker.workspace_structure.splice(0,this.worker.workspace_structure.length);
+                this.worker.workspace_isScratch = true;
+                this.worker.workspace_name = '';
+              }
+              this.projects_list.splice(idx, 1);
+            }
           })
           this.openBar(data.message);
         },
@@ -136,7 +147,18 @@ export class HomeComponent implements OnInit {
       this.httpOption).subscribe(
         (data:any) => {
           this.scratch_files_list.forEach((ele, idx) => {
-            if (ele == fileName) this.scratch_files_list.splice(idx, 1);
+            if (ele == fileName){
+              if(fileName==this.worker.openFile_name && this.worker.workspace_isScratch){
+                this.worker.openFile_body = '#include <iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}';
+                this.worker.openFile_lang = 'cpp';
+                this.worker.openFile_name = 'untitled.cpp'
+                this.worker.openFile_path = '';
+                this.worker.workspace_structure.splice(0,this.worker.workspace_structure.length);
+                this.worker.workspace_isScratch = true;
+                this.worker.workspace_name = '';
+              }
+              this.scratch_files_list.splice(idx, 1)
+            }
           })
           this.openBar(data.message);
         },

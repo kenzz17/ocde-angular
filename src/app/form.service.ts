@@ -35,6 +35,6 @@ export class FormService {
         'Authorization': "Token " + this.TOKEN
       })
     }
-    return this.http.post<JSON>("http://52.187.32.163:8000/api/logoutall/",{},httpOption);
+    return this.http.post<JSON>("http://52.187.32.163:8000/api/logout/",{},httpOption);
   }
 }
