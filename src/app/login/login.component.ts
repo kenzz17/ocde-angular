@@ -15,6 +15,10 @@ export class LoginComponent implements OnInit {
     username: new FormControl('',Validators.required),
     password: new FormControl('',Validators.required)
   });
+  
+  currentUser: any;
+  token= "";
+  username= "";
 
   
   public openBar(message: string) {
@@ -22,7 +26,19 @@ export class LoginComponent implements OnInit {
   }
 
 
-  constructor(public formService: FormService, private msgBar: MatSnackBar, private route:Router) { }
+  constructor(public formService: FormService, private msgBar: MatSnackBar, private route:Router) { 
+    
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+      if(this.token!="") this.route.navigate(['/home']);
+    }
+
+  }
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
@@ -30,8 +46,9 @@ export class LoginComponent implements OnInit {
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
-            this.formService.TOKEN = obj["token"];
-            this.formService.USERNAME = this.feedbackForm.get("username").value;
+            localStorage.setItem('currentUser', JSON.stringify({ token: obj["token"], name: this.feedbackForm.get("username").value }));
+            //this.formService.TOKEN = obj["token"];
+            //this.formService.USERNAME = this.feedbackForm.get("username").value;
             this.openBar("Login Successful");
             this.route.navigate(['/home'])
           }

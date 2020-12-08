@@ -17,6 +17,11 @@ export class RegComponent implements OnInit {
     password: new FormControl('',Validators.required)
   });
 
+  
+  currentUser: any;
+  token= "";
+  username= "";
+
 
   onSubmit(): void {
     if(this.feedbackForm.valid){
@@ -24,8 +29,9 @@ export class RegComponent implements OnInit {
         (res) => {
           var obj = JSON.parse(JSON.stringify(res));
           if(("token" in obj)==true){
-            this.formService.TOKEN = obj["token"];
-            this.formService.USERNAME = obj["user"]["username"];
+            localStorage.setItem('currentUser', JSON.stringify({ token: obj["token"], name: obj["user"]["username"] }));
+            //this.formService.TOKEN = obj["token"];
+            //this.formService.USERNAME = obj["user"]["username"];
             this.openBar("Registration Successful");
             this.route.navigate(['/home'])
           }
@@ -45,7 +51,18 @@ export class RegComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) { }
+  constructor(private formService: FormService, private msgBar: MatSnackBar,private route:Router) {
+    
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+      if(this.token!="") this.route.navigate(['/home']);
+    }
+   }
 
   ngOnInit(): void{
   }

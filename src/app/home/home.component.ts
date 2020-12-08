@@ -23,17 +23,46 @@ export class HomeComponent implements OnInit {
     if scratch file is opened workspace_structure or this.files stores other 
     scratch files
   */
-
-  httpOption = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': "Token " + this.formService.TOKEN
-    })
+  currentUser: any;
+  token= "";
+  username= "";
+  httpOption: any;
+  constructor(
+    public worker: WorkerService,
+    public router: Router,
+    public http: HttpClient,
+    public formService: FormService,
+    private msgBar: MatSnackBar
+  ) { 
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser==null){
+      localStorage.setItem('currentUser', JSON.stringify({ token: "", name: "" }));
+    }
+    else{
+      this.token = this.currentUser.token;
+      this.username = this.currentUser.name;
+      this.httpOption = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': "Token " + this.token
+        })
+     }
+    }
   }
+
   scratch_files_list = []; //FILES.names; //make get request, it gives File[]
   projects_list = []; //PROJECTS.projectlist; //get request gives just names of projects : string[]
 
   ngOnInit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>("http://52.187.32.163:8000/api/fileget/", {
       all: 'True', name: 'arbit'
     },
@@ -46,6 +75,15 @@ export class HomeComponent implements OnInit {
   }
 
   gotoScratch(fileName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.worker.openFile_name = fileName;
     //make get by `fileName`
     this.http.post<JSON>("http://52.187.32.163:8000/api/fileget/", {
@@ -61,6 +99,15 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/editor');
   }
   gotoProj(projName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     //make get request to `projName` project
     //may get data like {'name':projName, 'files':[..an array of files (ProjFile[])..]}
     this.http.post<JSON>("http://52.187.32.163:8000/api/projectget/", {
@@ -82,6 +129,15 @@ export class HomeComponent implements OnInit {
   init_file = '';
   is_add = false; is_Project = false;
   fin_add(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     const store = this.new_file;
     const init_store = this.init_file;
     if (this.is_Project) {
@@ -118,6 +174,15 @@ export class HomeComponent implements OnInit {
   }
 
   delFullProj(projName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>(
       "http://52.187.32.163:8000/api/projectdelete/", {
       all: 'True', projectname: projName, filename: 'arbit'
@@ -145,6 +210,15 @@ export class HomeComponent implements OnInit {
   }
 
   delScratch(fileName: string) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.token = this.currentUser.token;
+    this.username = this.currentUser.name;     
+    this.httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + this.token
+      })
+    }
     this.http.post<JSON>(
       "http://52.187.32.163:8000/api/filedelete/", {
       all: 'False', name: fileName
@@ -175,12 +249,6 @@ export class HomeComponent implements OnInit {
     this.msgBar.open(message, undefined, { duration: 3000, });
   }
 
-  constructor(
-    public worker: WorkerService,
-    public router: Router,
-    public http: HttpClient,
-    public formService: FormService,
-    private msgBar: MatSnackBar
-  ) { }
+  
 
 }
