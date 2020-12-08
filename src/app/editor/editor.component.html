@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="is_add">
                 <input [(ngModel)]="new_file" style="width: 60%;" required placeholder="name" id="name"/>
-                <button type="button" [disabled]="new_file.trim()=='' || new_file.indexOf('.')==-1" style="float: right; width: 35%" (click)="fin_add()">
+                <button type="button" [disabled]="new_file.trim()=='' || ['cpp','js','py'].indexOf(new_file.split('.').slice(-1)[0])==-1" style="float: right; width: 35%" (click)="fin_add()">
                     Confirm
                 </button>
             </div>

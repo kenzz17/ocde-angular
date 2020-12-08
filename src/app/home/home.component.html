@@ -15,7 +15,7 @@
             <button mat-button (click)="is_add=false; new_file=''" style="float: right; line-height: 125%">
                 Cancel
             </button>
-            <button mat-button (click)="fin_add()" [disabled]="new_file.trim()=='' || (!is_Project && new_file.indexOf('.')==-1)" style="float: right; line-height: 125%">
+            <button mat-button (click)="fin_add()" [disabled]="new_file.trim()=='' || (!is_Project && ['cpp','js','py'].indexOf(new_file.split('.').slice(-1)[0])==-1)" style="float: right; line-height: 125%">
                 Confirm
             </button>
         </mat-card>
